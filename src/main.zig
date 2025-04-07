@@ -145,29 +145,6 @@ const BreakableBlock = struct {
     }
 };
 
-const BlockRow = struct {
-    blocks: std.ArrayList(BreakableBlock),
-
-    pub fn init(start: rl.Vector2, allocator: std.mem.Allocator) !BlockRow {
-        var blocks = std.ArrayList(BreakableBlock).init(allocator);
-
-        const blockMargin = 10;
-        var screenWidth: f32 = @floatFromInt(rl.getScreenWidth());
-        screenWidth = screenWidth - blockMargin;
-
-        var currentX = start.x - blockMargin;
-        while (currentX + 100 <= screenWidth) {
-            const b = BreakableBlock.init(currentX, start.y);
-            currentX = currentX + b.model.width + blockMargin;
-            try blocks.append(b);
-        }
-
-        return BlockRow{
-            .blocks = blocks,
-        };
-    }
-};
-
 pub fn generateBlockList(screenWidth: i32, allocator: std.mem.Allocator) !std.ArrayList(BreakableBlock) {
     var blocks = std.ArrayList(BreakableBlock).init(allocator);
 
